@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using Microsoft.Data.Sqlite;
 
-namespace ConsoleApplication
+namespace Task2
 {
-    public class Program
+
+
+    public class Db
     {
         public static void Main1(string[] args)
         {
@@ -107,7 +110,10 @@ namespace ConsoleApplication
         }
         private static string GetConnectionString()
         {
-            return @"Data Source=northwind.db";
+            var ___dirname=Directory.GetCurrentDirectory();
+            System.Console.WriteLine(___dirname);
+            return @"Data Source="+___dirname+@"\northwind.db";
         }
     }
+
 }
