@@ -73,7 +73,6 @@ namespace Task1
 
         public static void StartUserSession(SqliteConnection connection)
         {
-            var transaction = connection.BeginTransaction();
             string query = "insert into Companies(Title,Country,AddedDate) values($v1,$v2,$v3)";
             string msg = "enter values as json data {Title:\"str\"},Country:\"Str\",AddedDate:\"YYYY-MM-DD\"";
             System.Console.WriteLine("press 'q' to end session");
@@ -88,46 +87,20 @@ namespace Task1
                 try
                 {
                     dynamic res = JsonConvert.DeserializeObject<Company>(line);
-                    ExecuteNonSelectStatementWithTransaction(connection, transaction, query, res.Title, res.Country, res.AddedDate);
+                    ExecuteNonSelectStatementWithTransaction(connection, query, res.Title, res.Country, res.AddedDate);
                     System.Console.WriteLine("success");
 
-                }
-                catch (Microsoft.Data.Sqlite.SqliteException ex)
-                {
 
-
-                    System.Console.Error.WriteLine(ex.StackTrace);
-                    transaction.Rollback();
-                    System.Console.WriteLine("roll back data");
                 }
-                catch
+                catch (Exception ex)
                 {
-                    System.Console.WriteLine("some error \npress 'q' to end session");
+                    System.Console.WriteLine(ex.Message);
                 }
                 System.Console.WriteLine(query);
                 System.Console.WriteLine(msg);
                 line = Console.ReadLine();
             }
-
-            transaction.Rollback();
             System.Console.WriteLine("Session ended");
-        }
-        public static void ExecuteNonSelectStatementWithTransaction(SqliteConnection dbConnection, SqliteTransaction transaction, string query, params dynamic[] parameters)
-        {
-            SqliteCommand command = dbConnection.CreateCommand();
-            command.Transaction = transaction;
-            command.Connection = dbConnection;
-            command.CommandText = query;
-            if (parameters != null)
-            {
-                for (int i = 0, k = 1; i < parameters.Length; i++, k = i + 1)
-                {
-                    var item = parameters[i];
-                    command.Parameters.AddWithValue("$v" + k, item);
-                }
-
-            }
-            command.ExecuteNonQuery();
         }
         public static void ExecuteNonSelectStatementWithTransaction(SqliteConnection dbConnection, string query, params dynamic[] parameters)
         {
@@ -159,7 +132,7 @@ namespace Task1
                 try
                 {
                     transaction.Rollback();
-
+                    System.Console.WriteLine("rollback data");
                 }
                 catch (Exception ex2)
                 {
