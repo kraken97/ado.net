@@ -9,7 +9,7 @@ namespace Task2
 
     public class Db
     {
-        public static void Main1(string[] args)
+        public static void Main(string[] args)
         {
 
 

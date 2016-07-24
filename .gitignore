@@ -1,0 +1,5 @@
+bin
+obj
+.vscode
+mydb.db
+project.lock.json

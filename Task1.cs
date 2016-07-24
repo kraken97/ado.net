@@ -75,7 +75,7 @@ namespace Task1
         {
             var transaction = connection.BeginTransaction();
             string query = "insert into Companies(Title,Country,AddedDate) values($v1,$v2,$v3)";
-            string msg = "enter values as json data {Title:\"str\"},Country:\"Str\",AddedDate:\"YYYY-MM-DD\"";
+            string msg = "enter values as json data {Title:\"str\",Country:\"Str\",AddedDate:\"YYYY-MM-DD\"}";
             System.Console.WriteLine("press 'q' to end session");
             System.Console.WriteLine(query);
             System.Console.WriteLine(msg);
@@ -100,9 +100,9 @@ namespace Task1
                     transaction.Rollback();
                     System.Console.WriteLine("roll back data");
                 }
-                catch
+                catch(Exception ex)
                 {
-                    System.Console.WriteLine("some error \npress 'q' to end session");
+                    System.Console.WriteLine(ex.Message);
                 }
                 System.Console.WriteLine(query);
                 System.Console.WriteLine(msg);
