@@ -26,7 +26,7 @@ namespace Task1
             System.Console.WriteLine("creatings new table");
             try
             {
-                ExecuteNonSelectStatementWithTransaction(connection, "create table Companies(ID INTEGER  PRIMARY KEY,Title varchar(255)  ,Country varchar(255), AddedDate Date not null);");
+                ExecuteNonSelectStatementWithTransaction(connection, "create table Companies(ID INTEGER  PRIMARY KEY,Title varchar(255)  not null,Country varchar(255) not null, AddedDate Date not null);");
 
             }
             catch (Microsoft.Data.Sqlite.SqliteException)
