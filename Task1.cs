@@ -31,7 +31,7 @@ namespace Task1
             catch (Microsoft.Data.Sqlite.SqliteException)
             {
 
-                System.Console.WriteLine("database exist ");
+                System.Console.WriteLine("database  already exist ");
             }
             System.Console.WriteLine("Add to records  10 to db");
             // we can  pass parameters to query in simplier way  using   $"insert into Companies(Title,Country,AddedDate) values({value1},{value2},{value3})"
@@ -103,8 +103,11 @@ namespace Task1
 
 
                     System.Console.Error.WriteLine(ex.StackTrace);
+                    //dont sure when we should do rollback
+                    //when we have json parse error or sql insertion error.
+                    // i think when we have sql exeption   next insertion can damage our data 
                     transaction.Rollback();
-                    System.Console.WriteLine("roll back data");
+                    System.Console.Error.WriteLine("roll back data");
                     //dont sure what we should do in this case  end session with break  or create new transaction  and continue 
                     transaction = connection.BeginTransaction();
                 }
@@ -197,10 +200,7 @@ namespace Task1
                 }
             }
         }
-   
-
         private static void ReadSingleRow(IDataRecord record)
-
         {
             string res = "| ";
             for (int i = 0; i < record.FieldCount; i++)
@@ -210,11 +210,6 @@ namespace Task1
             Console.WriteLine(res);
             Console.WriteLine("--------------------------------------------");
         }
-
-
-
-
-
     }
     public class Company
     {
