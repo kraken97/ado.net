@@ -19,7 +19,8 @@ namespace Task1
 
 
             System.Console.WriteLine("Getting Connection to db");
-            SqliteConnection connection = GetConnection(@"Data Source=mydb.db");
+            SqliteConnection connection =    new SqliteConnection(@"Data Source=mydb.db");
+          
             connection.Open();
             System.Console.WriteLine("creatings new table");
             try
@@ -33,6 +34,8 @@ namespace Task1
                 System.Console.WriteLine("database exist ");
             }
             System.Console.WriteLine("Add to records  10 to db");
+            // we can  pass parameters to query in simplier way  using   $"insert into Companies(Title,Country,AddedDate) values({value1},{value2},{value3})"
+            // but i think you expect that we should use   method addWithParameters 
             ExecuteNonSelectStatementWithTransaction(connection, "insert into Companies(Title,Country,AddedDate) values($v1,$v2,$v3)", "Luxoft", "Ukraine", "1997-01-01");
             ExecuteNonSelectStatementWithTransaction(connection, "insert into Companies(Title,Country,AddedDate) values($v1,$v2,$v3)", "Global Logic", "Ukraine", "1997-01-01");
             ExecuteNonSelectStatementWithTransaction(connection, "insert into Companies(Title,Country,AddedDate) values($v1,$v2,$v3)", "Aspera", "Ukraine", "1997-01-01");
@@ -187,7 +190,6 @@ namespace Task1
             selectCommand.CommandText = query;
             using (SqliteDataReader reader = selectCommand.ExecuteReader())
             {
-
                 while (reader.Read())
                 {
                     var record = reader as IDataRecord;
@@ -195,10 +197,7 @@ namespace Task1
                 }
             }
         }
-        public static SqliteConnection GetConnection(string connectionParams)
-        {
-            return new SqliteConnection(connectionParams);
-        }
+   
 
         private static void ReadSingleRow(IDataRecord record)
 
