@@ -4,7 +4,8 @@ using Microsoft.Data.Sqlite;
 using System.Data;
 using Newtonsoft.Json;
 using System.IO;
-
+using System.Text;
+using System.Linq;
 
 namespace Task1
 {
@@ -85,7 +86,7 @@ namespace Task1
             var line = System.Console.ReadLine();
             while (true)
             {
-                if (!string.IsNullOrEmpty(line) && line.Equals('q')){
+                if (!string.IsNullOrEmpty(line) && line.Equals("q")){
                     transaction.Commit();
                     break;
                 } 
@@ -202,12 +203,13 @@ namespace Task1
         }
         private static void ReadSingleRow(IDataRecord record)
         {
-            string res = "| ";
+            var  sb = new StringBuilder();
+        
             for (int i = 0; i < record.FieldCount; i++)
             {
-                res += record[i] + " | ";
+                sb.Append( record[i] + " | ");
             }
-            Console.WriteLine(res);
+            Console.WriteLine(sb.ToString());
             Console.WriteLine("--------------------------------------------");
         }
     }
