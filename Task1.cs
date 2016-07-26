@@ -85,7 +85,7 @@ namespace Task1
             var line = System.Console.ReadLine();
             while (true)
             {
-                if (!string.IsNullOrEmpty(line) && line[0] == 'q'){
+                if (!string.IsNullOrEmpty(line) && line.Equals('q')){
                     transaction.Commit();
                     break;
                 } 
