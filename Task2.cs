@@ -67,13 +67,14 @@ namespace Task2
                 ExecuteSELECTStatementAndPrint(connection, query14);
 
                 var subqueryFamia = @"SELECT  ProductId FROM 'Order Details' as OrderD  
-                                         left join  Orders  on OrderD.OrderID=Orders.OrderID  
-                                                    WHERE CustomerID='FAMIA'";
+                                            where OrderD.OrderID in (
+                                         Select OrderId  from Orders   
+                                                    WHERE CustomerID='FAMIA')";
                 var subqueryInner = @"SELECT  ProductId FROM 'Order Details' as OrderD   
-                                                left join  Orders  on OrderD.OrderID=Orders.OrderID 
-                                                            WHERE out.CustomerID=Orders.CustomerID";
+                                                where OrderD.orderId  in (select orders.orderid from  Orders  
+                                                            WHERE   out.CustomerID=Orders.CustomerID   )";
                 var query15 = $@" SELECT CustomerId FROM Customers out 
-                                            WHERE  (SELECT count(*) FROM ({subqueryInner} except {subqueryFamia}))=0";
+                                            WHERE   CustomerID !='FAMIA' and  (SELECT count(*) FROM ({subqueryInner} except    {subqueryFamia}))=0";
                 ExecuteSELECTStatementAndPrint(connection, query15);
 
 
