@@ -74,7 +74,7 @@ namespace Task1
         public static void StartUserSession(SqliteConnection connection)
         {
             var transaction = connection.BeginTransaction();
-            string query = "insert into Companies(Title,Country,AddedDate) values($v1,$v2,$v3)";
+            string query = "insert into Companies(Title,Country,AddedDate) values(\"Title\",\"Country\",\"AddedDate\")";
             string msg = "enter values as json data {Title:\"str\",Country:\"Str\",AddedDate:\"YYYY-MM-DD\"}";
             System.Console.WriteLine("press 'q' to end session");
             System.Console.WriteLine(query);
@@ -82,7 +82,10 @@ namespace Task1
             var line = System.Console.ReadLine();
             while (true)
             {
-                if (!string.IsNullOrEmpty(line) && line[0] == 'q') break;
+                if (!string.IsNullOrEmpty(line) && line[0] == 'q'){
+                    transaction.Commit();
+                    break;
+                } 
 
 
                 try
@@ -99,6 +102,8 @@ namespace Task1
                     System.Console.Error.WriteLine(ex.StackTrace);
                     transaction.Rollback();
                     System.Console.WriteLine("roll back data");
+                    //dont sure what we should do in this case  end session with break  or create new transaction  and continue 
+                    transaction = connection.BeginTransaction();
                 }
                 catch(Exception ex)
                 {
@@ -109,7 +114,6 @@ namespace Task1
                 line = Console.ReadLine();
             }
 
-            transaction.Rollback();
             System.Console.WriteLine("Session ended");
         }
         public static void ExecuteNonSelectStatementWithTransaction(SqliteConnection dbConnection, SqliteTransaction transaction, string query, params dynamic[] parameters)
