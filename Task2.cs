@@ -16,7 +16,7 @@ namespace Task2
             using (IDbConnection connection = new SqliteConnection(GetConnectionString()))
             {
                 connection.Open();
-                //qyery1;
+                // qyery1;
                 ExecuteSELECTStatementAndPrint(connection, "SELECT  ContactName FROM customers WHERE ContactName like 'D%'");
                 //query2
                 ExecuteSELECTStatementAndPrint(connection, "SELECT  upper(ContactName) FROM customers");
@@ -54,9 +54,8 @@ namespace Task2
                 var query11 = "SELECT     City ,count(City) FROM Customers  group by City  order by City";
                 ExecuteSELECTStatementAndPrint(connection, query11);
 
-                var query12 = @" SELECT * FROM Customers c 
-                                WHERE  17 > (SELECT  AVG(UnitPrice) as PriceAv FROM Orders,'Order Details' as OrderD 
-                                WHERE c.CustomerID=Orders.CustomerID and  Orders.OrderID=OrderD.OrderID)";
+                var query12 = @"SELECT  'UNIT Price: ',AVG(UnitPrice),'Customer id :',Orders.CustomerID  FROM Orders,'Order Details' as OrderD 
+                                WHERE   Orders.OrderID=OrderD.OrderID   group by Orders.CustomerID having AVG(UnitPrice)<17  and count(Orders.CustomerID)>10";
                 ExecuteSELECTStatementAndPrint(connection, query12);
 
                 var query13 = " SELECT Phone FROM Customers WHERE  Phone glob '[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'  ";
